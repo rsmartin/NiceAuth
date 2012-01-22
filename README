@@ -1,0 +1,60 @@
+******************************
+** NiceAuth for CakePHP 2.0 **
+******************************
+
+NiceAuth is a plugin for CakePHP the allows for easy management of users and permissions using CakePHP's ACL and Auth Components.
+This plugin is currently *very* alpha and I would not recommend it for production environments out of the box.
+
+--- Shell Access is required to setup NiceAuth ---
+
+*** Installation ***
+
+Please read and follow each step to insure a successful installation.
+I highly recommend you use a fresh installation of cakephp to test out this plugin.
+Make sure your CakePHP installation is installed, viewable to the web and connected to your database.
+The home page of your installation will guide you in setting up CakePHP
+
+From terminal, navigate to your app/Plugin folder and clone the Git repo.
+
+	git clone http://github.com/rsmartin/NiceAuth.git)
+
+Next, we need to the following line to the end of our app/Config/bootstrap.php file to load our plugins
+
+	CakePlugin::load('NiceAuth', array('routes' => true));
+
+Now, create your AppController.php file in app/Controllers and insert the following:
+
+	<?php
+	
+	class AppController extends Controller {
+		
+		var $uses = array('User', 'Group', 'Acl');
+		public $components = array(
+			'Acl',
+			'Session',
+			'Auth' => array(
+				'loginAction' => array(
+					'plugin' => 'nice_auth',
+					'controller' => 'users',
+					'action' => 'login'
+					),
+				'authError' => 'You are not authorized to view that page',
+				)
+			);
+			
+		public function beforeFilter() {
+			$this->Auth->authorize = array(
+	    	AuthComponent::ALL => array('actionPath' => 'controllers'),
+	    		'Actions'
+				);
+			}
+	  
+		}
+	
+	?>
+
+Next, from terminal, navigate to your app folder (eg. cakephp/app). Enter:
+
+	Console/cake nice_auth.nice_auth db_init
+
+This will create the Acl, User and Group databases as well as setup your Aco's and a superadmin user.
