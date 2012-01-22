@@ -16,7 +16,7 @@
 		<li><a href="/nice_auth/dashboard/groups">Groups</a></li>
 		<li><a href="/nice_auth/dashboard/users">Users</a></li>
 		<li><a href="/nice_auth/dashboard/database">Database Functions</a></li>
-		<li><a href="">Help</a></li>
+		<li><a href="/nice_auth/dashboard/help">Help</a></li>
 	</ul>
 	<div class="bottombar"></div>
 </div>

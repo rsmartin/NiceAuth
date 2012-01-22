@@ -25,6 +25,9 @@ class DashboardController extends NiceAuthAppController {
 	public function index() {
 		}
 	
+	public function help() {
+		}
+	
 	function fixAroAlias($model) {
 		if ($model == 'Group') {
 			$insertId = $this->Group->id;

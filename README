@@ -70,3 +70,13 @@ Lastly you must set your home page to allow it to be viewed. The quickest method
 		$this->Auth->allow('*');
 		}
 
+*** NOTE ***
+
+Every time you create a new controller or action, it must be added to the Acl Database.
+You can do this by navigating to cakephp/app in terminal and entering:
+	
+	Console/cake nice_auth.nice_auth update
+
+--- All of the above steps must be completed before you can access your site ---
+
+For help with other tasks, go to /dashboard and click the help tab
