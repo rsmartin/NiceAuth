@@ -57,4 +57,16 @@ Next, from terminal, navigate to your app folder (eg. cakephp/app). Enter:
 
 	Console/cake nice_auth.nice_auth db_init
 
+You will be asked four questions for setting up the database. Enter y and enter for each.
 This will create the Acl, User and Group databases as well as setup your Aco's and a superadmin user.
+
+--- Take note of the admin username and password once the process completes ---
+
+You can now navigate to yoursite.com/dashboard and login with the login credentials given to you earlier
+
+Lastly you must set your home page to allow it to be viewed. The quickest method is to copy the PagesController.php from cakephp/lib/Controller to cakephp/app/Controllers then add the following within the class
+
+	public function beforeFilter() {
+		$this->Auth->allow('*');
+		}
+
