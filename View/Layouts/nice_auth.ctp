@@ -12,11 +12,11 @@
 </div>
 <div id="nav">
 	<ul class="menu">
-		<li><a href="/nice_auth/dashboard">Dashboard</a></li>
-		<li><a href="/nice_auth/dashboard/groups">Groups</a></li>
-		<li><a href="/nice_auth/dashboard/users">Users</a></li>
-		<li><a href="/nice_auth/dashboard/database">Database Functions</a></li>
-		<li><a href="/nice_auth/dashboard/help">Help</a></li>
+		<li><?php echo $this->Html->link('Dashboard', array('plugin' => 'nice_auth', 'controller' => 'dashboard', 'action' => 'index')); ?></li>
+		<li><?php echo $this->Html->link('Groups', array('plugin' => 'nice_auth', 'controller' => 'dashboard', 'action' => 'groups')); ?></li>
+		<li><?php echo $this->Html->link('Users', array('plugin' => 'nice_auth', 'controller' => 'dashboard', 'action' => 'users')); ?></li>
+		<li><?php echo $this->Html->link('Database Functions', array('plugin' => 'nice_auth', 'controller' => 'dashboard', 'action' => 'database')); ?></li>
+		<li><?php echo $this->Html->link('Help', array('plugin' => 'nice_auth', 'controller' => 'dashboard', 'action' => 'help')); ?></li>
 	</ul>
 	<div class="bottombar"></div>
 </div>
