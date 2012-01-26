@@ -16,7 +16,7 @@ The home page of your installation will guide you in setting up CakePHP
 
 From terminal, navigate to your app/Plugin folder and clone the Git repo.
 
-	git clone http://github.com/rsmartin/NiceAuth.git)
+	git clone http://github.com/rsmartin/NiceAuth.git
 
 Next, we need to the following line to the end of our app/Config/bootstrap.php file to load our plugins
 
