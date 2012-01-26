@@ -54,7 +54,6 @@ class UsersController extends NiceAuthAppController {
 
     function logout(){
         $this->Auth->logout();
-        $this->redirect('/');
     	}
 	}
 
