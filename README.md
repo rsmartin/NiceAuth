@@ -71,7 +71,7 @@ Next, from terminal, navigate to your app folder (eg. cakephp/app). Enter:
 You will be asked four questions for setting up the database. Enter y and enter for each.
 This will create the Acl, User and Group databases as well as setup your Aco's and a superadmin user.
 
---- Take note of the admin username and password once the process completes ---
+**Take note of the admin username and password once the process completes**
 
 You can now navigate to yoursite.com/dashboard and login with the login credentials given to you earlier
 
@@ -92,6 +92,6 @@ You can do this by navigating to cakephp/app in terminal and entering:
 Console/cake nice_auth.nice_auth update
 ```
 
-*All of the above steps must be completed before you can access your site*
+**All of the above steps must be completed before you can access your site**
 
 For help with other tasks, go to /dashboard and click the help tab
