@@ -20,42 +20,48 @@ The home page of your installation will guide you in setting up CakePHP
 
 From terminal, navigate to your app/Plugin folder and clone the Git repo.
 
-	git clone http://github.com/rsmartin/NiceAuth.git
+```
+git clone http://github.com/rsmartin/NiceAuth.git
+```
 
 Next, we need to the following line to the end of our app/Config/bootstrap.php file to load our plugins
 
-	CakePlugin::load('NiceAuth', array('routes' => true));
+```php
+CakePlugin::load('NiceAuth', array('routes' => true));
+```
 
 Now, create your AppController.php file in app/Controllers and insert the following:
 
-	<?php
+```php
+<?php
+
+class AppController extends Controller {
 	
-	class AppController extends Controller {
+	var $uses = array('User', 'Group', 'Acl');
+	public $components = array(
+		'Acl',
+		'Session',
+		'Auth' => array(
+			'loginAction' => array(
+				'plugin' => 'nice_auth',
+				'controller' => 'users',
+				'action' => 'login'
+				),
+			'authError' => 'You are not authorized to view that page',
+			)
+		);
 		
-		var $uses = array('User', 'Group', 'Acl');
-		public $components = array(
-			'Acl',
-			'Session',
-			'Auth' => array(
-				'loginAction' => array(
-					'plugin' => 'nice_auth',
-					'controller' => 'users',
-					'action' => 'login'
-					),
-				'authError' => 'You are not authorized to view that page',
-				)
+	public function beforeFilter() {
+		$this->Auth->authorize = array(
+    	AuthComponent::ALL => array('actionPath' => 'controllers'),
+    		'Actions'
 			);
-			
-		public function beforeFilter() {
-			$this->Auth->authorize = array(
-	    	AuthComponent::ALL => array('actionPath' => 'controllers'),
-	    		'Actions'
-				);
-			}
-	  
 		}
-	
-	?>
+  
+	}
+
+?>
+```
 
 Next, from terminal, navigate to your app folder (eg. cakephp/app). Enter:
 
@@ -70,16 +76,20 @@ You can now navigate to yoursite.com/dashboard and login with the login credenti
 
 Lastly you must set your home page to allow it to be viewed. The quickest method is to copy the PagesController.php from cakephp/lib/Controller to cakephp/app/Controllers then add the following within the class
 
-	public function beforeFilter() {
-		$this->Auth->allow('*');
-		}
+```php
+public function beforeFilter() {
+	$this->Auth->allow('*');
+	}
+```
 
 *** NOTE ***
 
 Every time you create a new controller or action, it must be added to the Acl Database.
 You can do this by navigating to cakephp/app in terminal and entering:
-	
-	Console/cake nice_auth.nice_auth update
+
+```	
+Console/cake nice_auth.nice_auth update
+```
 
 --- All of the above steps must be completed before you can access your site ---
 
