@@ -14,6 +14,7 @@ class UsersController extends NiceAuthAppController {
 	function beforeFilter() {
 		parent::beforeFilter();
 		$this->Auth->userModel = 'User';
+		//Allow Anyone to access the users controller
 		$this->Auth->allow('*');
 		}
 
