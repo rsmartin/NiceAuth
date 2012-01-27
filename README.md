@@ -1,22 +1,23 @@
-******************************
-** NiceAuth for CakePHP 2.0 **
-******************************
+
+# NiceAuth for CakePHP 2.0 #
+
+-------------------------------
 
 NiceAuth is a plugin for CakePHP the allows for easy management of users and permissions using CakePHP's ACL and Auth Components.
 This plugin is currently *very* alpha and I would not recommend it for production environments out of the box.
 
---- Shell Access is required to setup NiceAuth ---
+**Shell Access is required to setup NiceAuth**
 
-Demo available at http://niceauth.rsmartin.me
+> Demo available at http://niceauth.rsmartin.me
 
 Please post your ideas, comments and issues on our github page so we can continue development.
 
-*** Installation ***
+### Installation ###
 
-Please read and follow each step to insure a successful installation.
-I highly recommend you use a fresh installation of cakephp to test out this plugin.
-Make sure your CakePHP installation is installed, viewable to the web and connected to your database.
-The home page of your installation will guide you in setting up CakePHP
+> Please read and follow each step to insure a successful installation.
+> I highly recommend you use a fresh installation of cakephp to test out this plugin.
+> Make sure your CakePHP installation is installed, viewable to the web and connected to your database.
+> The home page of your installation will guide you in setting up CakePHP
 
 From terminal, navigate to your app/Plugin folder and clone the Git repo.
 
@@ -82,7 +83,7 @@ public function beforeFilter() {
 	}
 ```
 
-*** NOTE ***
+#### NOTE ####
 
 Every time you create a new controller or action, it must be added to the Acl Database.
 You can do this by navigating to cakephp/app in terminal and entering:
@@ -91,6 +92,6 @@ You can do this by navigating to cakephp/app in terminal and entering:
 Console/cake nice_auth.nice_auth update
 ```
 
---- All of the above steps must be completed before you can access your site ---
+*All of the above steps must be completed before you can access your site*
 
 For help with other tasks, go to /dashboard and click the help tab
