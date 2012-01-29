@@ -9,7 +9,7 @@ App::uses('DbAcl', 'Model');
 class UsersController extends NiceAuthAppController {
 	public $name = "Users";
 	public $uses = array("Aro", "NiceAuth.Group", "NiceAuth.User");
-	public $components = array('Auth', 'Acl');
+	public $components = array('Auth', 'Acl', 'NiceAuth.Openid');
 	
 	function beforeFilter() {
 		parent::beforeFilter();
@@ -51,7 +51,17 @@ class UsersController extends NiceAuthAppController {
 				$this->Session->setFlash(__('Invalid username or password, try again'));
 				}
 			}
-    	} 
+    	}
+    
+    function openid() {
+        if ($this->request->is('post')) {
+			//$this->Openid->load();
+			echo $this->request;
+			exit();
+			}
+    	}
+
+//$this->OneTimer = $this->Components->load('OneTimer');
 
     function logout(){
         $this->Auth->logout();

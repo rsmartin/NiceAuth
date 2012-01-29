@@ -8,3 +8,13 @@
     ?>
     </fieldset>
 <?php echo $this->Form->end(__('Login'));?>
+
+
+<?php echo $this->Form->create('User', array('action' => 'openid'));?>
+    <fieldset>
+        <legend><?php echo __('OpenID Login'); ?></legend>
+    <?php
+        echo $this->Form->input('openid');
+    ?>
+    </fieldset>
+<?php echo $this->Form->end(__('Login'));?>
