@@ -47,7 +47,7 @@
  * @copyright Copyright (c) 2010, Mewp
  * @license http://www.opensource.org/licenses/mit-license.php MIT
  */
-class Openid
+class Lightopenid
 {
     public $returnUrl
          , $required = array()

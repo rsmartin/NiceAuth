@@ -56,8 +56,11 @@ class UsersController extends NiceAuthAppController {
     function openid() {
         if ($this->request->is('post')) {
 			//$this->Openid->load();
-			echo $this->request;
-			exit();
+			//echo "<pre>";
+			//print_r($this->request->data['User']['openid']);
+			//echo "</pre>";
+			//exit();
+			$this->Openid->send($this->request->data['User']['openid']);
 			}
     	}
 
