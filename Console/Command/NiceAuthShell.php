@@ -42,7 +42,7 @@ class NiceAuthShell extends AppShell {
 		$this->Aro->save(array('alias' => 'member'));
 
 		$this->User->create();
-		$this->User->save(array('username' => 'admin', 'password' => 'pass1234', 'group_id' => 1));
+		$this->User->save(array('username' => 'admin', 'email' => 'admin@example.com', 'password' => 'pass1234', 'group_id' => 1));
 		$this->Aro->findByForeignKey($this->User->Id);
 		$this->Aro->save(array('alias' => 'admin'));
 		$this->Acl->allow('superadmin', 'controllers');

@@ -1,5 +1,10 @@
 <?php
 App::uses('NiceAuthAppController', 'NiceAuth.Controller');
+App::uses('Controller', 'Controller');
+App::uses('ComponentCollection', 'Controller');
+App::uses('AclComponent', 'Controller/Component');
+App::uses('DbAcl', 'Model');
+
 class DashboardController extends NiceAuthAppController {
 	
 	var $uses = array('NiceAuth.User', 'NiceAuth.Group', 'Aco', 'Aro');
@@ -9,7 +14,6 @@ class DashboardController extends NiceAuthAppController {
 		'Session',
 		'Auth' => array(
 			'loginAction' => array(
-				'plugin' => 'nice_auth',
 				'controller' => 'users',
 				'action' => 'login'
 				),
@@ -28,7 +32,7 @@ class DashboardController extends NiceAuthAppController {
 	public function help() {
 		}
 	
-	function fixAroAlias($model) {
+	private function fixAroAlias($model) {
 		if ($model == 'Group') {
 			$insertId = $this->Group->id;
 			$group = $this->Group->read('name');
@@ -38,6 +42,7 @@ class DashboardController extends NiceAuthAppController {
 			$insertId = $this->User->id;
 			$user = $this->User->read('username');
 			$alias = $user['User']['username'];
+			//$parent_id = $user['User']['group_id']
 			}
 		
 		$aroRecord = $this->Aro->find('first', array('conditions' => array('foreign_key' => $insertId, 'model' => $model)));
@@ -50,11 +55,11 @@ class DashboardController extends NiceAuthAppController {
 		}
 
 	public function users() {
-		$this->set('users', $this->User->find('all'));
+		$this->set('users', $this->paginate('User'));
 		$this->set('groups', $this->Group->find('list'));
 		}
 	
-	public function edit_user($id) {
+	public function user_edit($id) {
         $this->User->id = $id;
         if (!$this->User->exists()) {
             throw new NotFoundException(__('Invalid user'));
@@ -78,6 +83,11 @@ class DashboardController extends NiceAuthAppController {
         	}
         $groups = $this->Group->find('list');
         $this->set(compact('groups'));
+		}
+
+	public function user_delete($id) {
+		$this->User->delete($id);
+		$this->redirect('/nice_auth/dashboard/users');
 		}
 
 	public function user_permissions($id) {
@@ -181,13 +191,13 @@ class DashboardController extends NiceAuthAppController {
             	}
 			}
 		
-		$this->set('groups', $this->Group->find('all'));
+		$this->set('groups', $this->paginate('Group'));
 		$defaultGroup = Configure::read('NiceAuth.defaultGroup');
 		$this->set('defaultGroup', $defaultGroup);
 
 		}
 	
-	public function edit_group($id) {
+	public function group_edit($id) {
         $this->Group->id = $id;
         if (!$this->Group->exists()) {
             throw new NotFoundException(__('Invalid user'));
@@ -208,7 +218,7 @@ class DashboardController extends NiceAuthAppController {
         	}		
 		}
 	
-	public function delete_group($id) {
+	public function group_delete($id) {
 		$this->Group->delete($id);
 		$this->redirect('/nice_auth/dashboard/groups');
 		}
@@ -301,20 +311,20 @@ class DashboardController extends NiceAuthAppController {
 		$this->set('perms', $perms);
 	
 		}
-	
-	public function rebuildTree($id) {
-		if ($id == 'aco') {
-			$ret = $this->Acl->Aco->recover();
-			}
-		elseif ($id == 'aro') {
-			$ret = $this->Acl->Aro->recover();
-			}
-		$this->Session->setFlash($id." tree successfully rebuilt");
-		$this->redirect('/dashboard');
-		}
-	
+
 	public function database() {
-		
+		if (isset($this->request->params['pass'][0])) {
+			if ($this->request->params['pass'][0] == 'aco') {
+				if($this->Acl->Aco->recover()) {
+					$this->Session->setFlash('Aco Tree Rebuilt');
+					}
+				}
+			elseif ($this->request->params['pass'][0] == 'aro') {
+				if($this->Acl->Aro->recover()) {
+					$this->Session->setFlash('Aro Tree Rebuilt');
+					}
+				}		
+			}
 		}
 	
 

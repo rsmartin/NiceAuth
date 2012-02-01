@@ -1,27 +1,51 @@
 <h2>Group List</h2>
+
+<table>
+<tr>
+		<th><?php echo $this->Paginator->sort('name');?></th>
+		<th><?php echo $this->Paginator->sort('created');?></th>
+		<th><?php echo $this->Paginator->sort('modified');?></th>
+		<th colspan="3" class="actions"><?php echo __('Actions');?></th>
+</tr>
+
 <?php
-
-echo "<table style=\"width:500px\">";
-echo "<thead><th>Group</th></thead>";
 foreach($groups as $group) {
-	echo "<tr><td>".$group['Group']['name']." <span class=\"small\">(".count($group['User'])." users)</span></td>";
-	echo "<td><a href=\"/nice_auth/dashboard/edit_group/".$group['Group']['id']."\">Rename</a></td>";
-	echo "<td><a href=\"/nice_auth/dashboard/group_permissions/".$group['Group']['id']."\">Set Permissions</a></td>";
-	echo "<td>".$this->Html->link('Delete', '/nice_auth/dashboard/delete_group/'.$group['Group']['id'], array(), 'Are you sure you want to delete this group?')."</td></tr>";
-	if ($group['Group']['id'] == $defaultGroup) {
-		echo "<td>Default Group</td>";
-		}
+	echo "<tr>";
+		echo "<td>".$group['Group']['name']." <span class=\"small\">(".count($group['User'])." users)</span></td>";
+		echo "<td>".$group['Group']['created']."</td>";
+		echo "<td>".$group['Group']['modified']."</td>";
+		echo "<td>".$this->Html->link('Rename', '/dashboard/group_edit/'.$group['Group']['id'])."</td>";
+		echo "<td>".$this->Html->link('Set Permissions', '/dashboard/group_permissions/'.$group['Group']['id'])."</td>";
+		echo "<td>".$this->Html->link('Delete', '/dashboard/group_delete/'.$group['Group']['id'], array(), 'Are you sure you want to delete this group?')."</td>";
+		if ($group['Group']['id'] == $defaultGroup) {
+			echo "<td>Default Group</td>";
+			}
+	echo "</tr>";
 	}
-echo "</table>";
+?>
+</table>
 
-print_r($defaultGroup);
+<p>
+<?php
+echo $this->Paginator->counter(array(
+'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
+));
+?>	</p>
 
-echo "<p>&nbsp;</p>";
+<div class="paging">
+<?php
+	echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
+	echo $this->Paginator->numbers(array('separator' => ''));
+	echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
+?>
+</div>
 
-echo "<h2>Add Group</h2>";
 
+<p>&nbsp;</p>
+<h2>Add Group</h2>
+
+<?php
 echo $this->Form->create('Group');
 echo $this->Form->input('name');
 echo $this->Form->end('Add Group');
-
 ?>

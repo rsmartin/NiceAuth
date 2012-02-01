@@ -35,14 +35,19 @@ class User extends NiceAuthAppModel {
 	var $validate = array(
 		'username' => array( 
 			'alphaNumeric' => array(
-				'rule' => 'alphaNumeric',
+				//'rule' => 'alphaNumeric',
+				'rule' => 'isUnique',
 				'required' => true,
-				'message' => 'Letters and Numbers Only'
+				'message' => 'This username already exists'
 				),
 			'between' => array(
-				'rule' => array('between', 5, 15),
-				'message' => 'Must be between 5 and 15 characters'
+				'rule' => array('between', 5, 400),
+				'message' => 'Must be between 5 and 25 characters'
 				)
+			),
+		'email' => array(
+			'rule' => 'email',
+			'message' => 'You must enter a valid email address'
 			),
 		'password' => array(
 			'rule' => array('minLength', 8),
