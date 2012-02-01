@@ -1,4 +1,4 @@
 <h2>User Profile</h2>
 
-Username: <?php echo AuthComponent::user('username'); ?><br />
-Email: <?php echo AuthComponent::user('email'); ?>
+Username: <?php echo $user['User']['username']; ?><br />
+Email: <?php echo $user['User']['email']; ?><br />

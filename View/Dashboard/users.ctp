@@ -6,7 +6,6 @@
 		<th><?php echo $this->Paginator->sort('email');?></th>
 		<th><?php echo $this->Paginator->sort('group_id');?></th>
 		<th><?php echo $this->Paginator->sort('created');?></th>
-		<th><?php echo $this->Paginator->sort('modified');?></th>
 		<th class="actions" colspan="3"><?php echo __('Actions');?></th>
 </tr>
 
@@ -17,9 +16,8 @@ foreach($users as $user) {
 		echo "<td>".$user['User']['email']."</td>";
 		echo "<td>".$groups[$user['User']['group_id']]."</td>";
 		echo "<td>".$user['User']['created']."</td>";
-		echo "<td>".$user['User']['modified']."</td>";
-		echo "<td>".$this->Html->link('edit', '/dashboard/user_edit/'.$user['User']['id'])."</td>";
-		echo "<td>".$this->Html->link('custom permissions', '/dashboard/user_permissions/'.$user['User']['id'])."</td>";
+		echo "<td>".$this->Html->link('Edit', '/dashboard/user_edit/'.$user['User']['id'])."</td>";
+		echo "<td>".$this->Html->link('Permissions', '/dashboard/user_permissions/'.$user['User']['id'])."</td>";
 		if ($user['User']['id'] != 1) {
 			echo "<td>".$this->Html->link('Delete', '/dashboard/user_delete/'.$user['User']['id'], array(), 'Are you sure you want to delete this user?')."</td></tr>";
 			}

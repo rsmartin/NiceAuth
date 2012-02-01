@@ -13,7 +13,7 @@ class UsersController extends NiceAuthAppController {
 	public $components = array('Auth', 'Acl');
 	
 	public function index() {
-		$this->Auth->user('id');
+		$this->set('user', $this->User->findById($this->Auth->user()));
 		}
 	
 	public function beforeFilter() {

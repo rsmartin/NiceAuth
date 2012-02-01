@@ -28,7 +28,7 @@
 ?>
 </div>
 
-<div id="footer">NiceAuth</div>
+<div id="footer">NiceAuth : <a hre="https://github.com/rsmartin/NiceAuth">GitHub</a></div>
 </div>
 
 </body>
