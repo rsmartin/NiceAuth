@@ -53,6 +53,17 @@ class DashboardController extends NiceAuthAppController {
 			}
 		
 		}
+	
+	private function fixAroParent() {
+		$insertId = $this->User->id;
+		$user = $this->User->read('group_id');
+		$group = $user['User']['group_id'];
+		$aroRecord = $this->Aro->find('first', array('conditions' => array('foreign_key' => $insertId, 'model' => 'User')));
+		if ($aroRecord['Aro']['parent_id'] != $group) {
+			$aroRecord['Aro']['parent_id'] = $group;
+			$this->Aro->save($aroRecord);
+			}
+		}
 
 	public function users() {
 		$this->set('users', $this->paginate('User'));
@@ -72,6 +83,7 @@ class DashboardController extends NiceAuthAppController {
             	}
             if ($this->User->save($this->request->data)) {
             	$this->fixAroAlias('User');
+            	$this->fixAroParent();
                 $this->Session->setFlash(__('The user has been saved'));
             	}
             else {
