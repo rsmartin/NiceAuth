@@ -44,7 +44,6 @@ class AppController extends Controller {
 		'Session',
 		'Auth' => array(
 			'loginAction' => array(
-				'plugin' => 'nice_auth',
 				'controller' => 'users',
 				'action' => 'login'
 				),
