@@ -1,5 +1,19 @@
 <?php
 
+/**
+ * User Controller for NiceAuth Plugin
+ *
+ * NiceAuth : User Authentication and Authorization Plugin for CakePHP
+ * Copyright 2011, R.S.Martin (http://rsmartin.me)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @author RSMartin
+ * @copyright Copyright (c) 2011, RSMartin (http://rsmartin.me)
+ * @license http://www.opensource.org/licenses/mit-license.php MIT
+ */
+
 App::uses('NiceAuthAppController', 'NiceAuth.Controller');
 App::uses('Controller', 'Controller');
 App::uses('ComponentCollection', 'Controller');
@@ -101,33 +115,7 @@ class UsersController extends NiceAuthAppController {
 			$this->redirect($openid->authUrl());
 			}
     	}
-/*
-	public function openid_return() {
-		$openid = new Lightopenid($_SERVER['SERVER_NAME']);
-		$ret = $openid->getAttributes();
-		echo "<pre>";
-		print_r($openid);
-		exit();
-		if($openid->mode) { 
-			if($this->User->findByUsername($ret['contact/email']) == false) {
-				$this->User->create();
-				$newUser = array('username' => $ret['contact/email'], 'email' => $ret['contact/email'], 'password' => 'authopeniduser!', 'group_id' => Configure::read('NiceAuth.defaultGroup'));
-				$this->User->save($newUser);
-				$user = $this->User->read();
-				$this->fixAlias();
-				$this->Auth->login($user['User']);
-				$this->Session->setFlash('Your account has been created.');
-				$this->redirect('/me');
-				}
-			else {
-				$user = $this->User->findByUsername($ret['contact/email']);
-				$this->Auth->login($user['User']);
-				$this->Session->setFlash('Welcome Back!');
-				$this->redirect($this->Auth->redirect()); //'/me');
-				}
-			}
-		}
-*/
+
     public function logout(){
         $this->Auth->logout();
         $this->Session->setFlash('You have been successfully logged out.');
