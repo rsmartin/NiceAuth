@@ -11,6 +11,7 @@
 
 <form action="<?php echo $this->Html->url('/users/openid'); ?>" method="post" id="openid_form">
 	<input type="hidden" name="action" value="verify" />
+	<input type="hidden" name="type" value="login" />
 	<fieldset>
 		<legend>-or- Sign in with another account.</legend>
 		<div id="openid_choice">

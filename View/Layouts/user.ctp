@@ -27,7 +27,9 @@ echo $this->Html->script('/nice_auth/js/openid-en.js');
 	<div id="nav">
 		<ul class="menu">
 			<li><?php echo $this->Html->link('Home', '/'); ?></li>
+			<li><?php echo $this->Html->link('Login', '/login'); ?></li>
 			<li><?php echo $this->Html->link('Logout', '/logout'); ?></li>
+			<li><?php echo $this->Html->link('Register', '/register'); ?></li>
 		</ul>
 		<div class="bottombar"></div>
 	</div>

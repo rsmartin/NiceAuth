@@ -10,7 +10,15 @@ App::import('NiceAuth.Vendor', 'Lightopenid');
 class UsersController extends NiceAuthAppController {
 	public $name = "Users";
 	public $uses = array("Aro", "NiceAuth.Group", "NiceAuth.User");
-	public $components = array('Auth', 'Acl');
+	public $components = array(
+		'Auth' => array(
+			'authenticate' => array(
+				'Form',
+				'NiceAuth.Openid'
+				)
+			),
+		'Acl'
+		);
 	
 	public function index() {
 		$this->set('user', $this->User->findById($this->Auth->user()));
@@ -46,10 +54,30 @@ class UsersController extends NiceAuthAppController {
             	$this->Session->setFlash('Unable to create your\'re account. Please try again.');
             	}
         	}
+        elseif ($this->request->is('get')) {
+        	if (isset($this->request->query['openid_mode'])) {
+        		$openid = new Lightopenid($_SERVER['SERVER_NAME']);
+				$ret = $openid->getAttributes();
+	    		$data = $openid->data;
+				if ($this->User->findByEmail($ret['contact/email']) == false) {
+					$this->User->create();
+					$newUser = array('username' => $ret['contact/email'], 'email' => $ret['contact/email'], 'password' => $data['openid_identity'], 'group_id' => Configure::read('NiceAuth.defaultGroup'));
+					$this->User->save($newUser);
+					$user = $this->User->read();
+					$this->fixAlias();
+					$this->Auth->login($user['User']);
+					$this->Session->setFlash('Your account has been created.');
+					$this->redirect('/me');
+					}
+				else {
+					$this->Session->setFlash('This email address already exists, please try logging in instead.');
+					}
+        		}
+        	}
         }
 
     public function login(){
-        if ($this->request->is('post')) {
+        if ($this->request->is('post') || ($this->request->is('get') && isset($this->request->query['openid_mode']))) {
 			if ($this->Auth->login()) {
 				$this->redirect($this->Auth->redirect());
 				}
@@ -64,14 +92,22 @@ class UsersController extends NiceAuthAppController {
 			$openid = new Lightopenid($_SERVER['SERVER_NAME']);
 			$openid->identity = $this->request->data['openid'];
 			$openid->required = array('contact/email');
-			$openid->returnUrl = 'http://'.$_SERVER['SERVER_NAME'].Router::url(array('controller' => 'users', 'action' => 'openid_return'));
+			if ($this->request->data['type'] == 'register') {
+				$openid->returnUrl = 'http://'.$_SERVER['SERVER_NAME'].Router::url(array('controller' => 'users', 'action' => 'register'));
+				}
+			else {
+				$openid->returnUrl = 'http://'.$_SERVER['SERVER_NAME'].Router::url(array('controller' => 'users', 'action' => 'login'));
+				}
 			$this->redirect($openid->authUrl());
 			}
     	}
-
+/*
 	public function openid_return() {
 		$openid = new Lightopenid($_SERVER['SERVER_NAME']);
 		$ret = $openid->getAttributes();
+		echo "<pre>";
+		print_r($openid);
+		exit();
 		if($openid->mode) { 
 			if($this->User->findByUsername($ret['contact/email']) == false) {
 				$this->User->create();
@@ -91,7 +127,7 @@ class UsersController extends NiceAuthAppController {
 				}
 			}
 		}
-
+*/
     public function logout(){
         $this->Auth->logout();
         $this->Session->setFlash('You have been successfully logged out.');

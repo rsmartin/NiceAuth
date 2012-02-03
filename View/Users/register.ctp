@@ -12,6 +12,7 @@ echo $this->Form->end('Register');
 
 <form action="<?php echo $this->Html->url('/users/openid'); ?>" method="post" id="openid_form">
 	<input type="hidden" name="action" value="verify" />
+	<input type="hidden" name="type" value="register" />
 	<fieldset>
 		<legend>-or- Sign in with another account.</legend>
 		<div id="openid_choice">
@@ -20,7 +21,7 @@ echo $this->Form->end('Register');
 		</div>
 		<div id="openid_input_area">
 			<input id="openid_identifier" name="openid" type="text" value="http://" />
-			<input id="openid_submit" type="submit" value="Sign-In"/>
+			<input id="openid_submit" type="submit" value="Sign-In" />
 		</div>
 		<noscript>
 			<p>OpenID is service that allows you to log-on to many different websites using a single identity.
