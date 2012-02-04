@@ -18,3 +18,16 @@
 
 Username: <?php echo $user['User']['username']; ?><br />
 Email: <?php echo $user['User']['email']; ?><br />
+
+<p></p>
+<h3>Change Password</h3>
+
+<?php
+
+echo $this->Form->create('User');
+echo $this->Form->input('old_password', array('type' => 'password', 'div' => array('class' => 'required')));
+echo $this->Form->input('password', array('label' => 'New Password'));
+echo $this->Form->input('password_verify', array('label' => 'Re-Type New Password', 'type' => 'password', 'div' => array('class' => 'required')));
+echo $this->Form->end('Update Password');
+
+?>

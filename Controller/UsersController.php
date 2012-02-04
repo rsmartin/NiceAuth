@@ -19,6 +19,7 @@ App::uses('Controller', 'Controller');
 App::uses('ComponentCollection', 'Controller');
 App::uses('AclComponent', 'Controller/Component');
 App::uses('DbAcl', 'Model');
+App::uses('CakeEmail', 'Network/Email');
 App::import('NiceAuth.Vendor', 'Lightopenid');
 
 class UsersController extends NiceAuthAppController {
@@ -35,7 +36,33 @@ class UsersController extends NiceAuthAppController {
 		);
 	
 	public function index() {
-		$this->set('user', $this->User->findById($this->Auth->user()));
+		if ($this->Auth->user('id')) {
+			$user = $this->User->findById($this->Auth->user());
+			$this->set('user', $user);
+			if ($this->request->is('post')) {
+				$req = $this->request->data;
+				if ($user['User']['password'] == AuthComponent::password($req['User']['old_password'])) {
+					if ($req['User']['password'] == $req['User']['password_verify']) {
+						$user['User']['password'] = $req['User']['password'];
+		        		if($this->User->save($user)) {
+		        			$this->Session->setFlash('New Password Saved!');
+		        			}
+		        		else {
+		        			$this->Session->setFlash('The new passwords didn\'t match.');
+		        			}
+						}
+					else {
+						$this->Session->setFlash('The new passwords didn\'t match.');
+						}
+					}
+				else {
+					$this->Session->setFlash('The old password you entered was incorrect');
+					}
+				}
+			}
+		else {
+			$this->redirect('/login');
+			}
 		}
 	
 	public function beforeFilter() {
@@ -51,6 +78,45 @@ class UsersController extends NiceAuthAppController {
 		$this->Aro->findByForeignKey($user['User']['id']);
 		$this->Aro->save(array('alias' => $user['User']['username']));
 				}
+	
+	private function sendEmail($type, $to, $vars = null) {
+		if ($type == "registration" && Configure::read('NiceAuth.regEmail') == true) {
+			$email = new CakeEmail('default');
+			$email->to($to)
+				->emailFormat('html')
+				->subject(Configure::read('NiceAuth.regSubject'))
+				->template('NiceAuth.register')
+				->viewVars($vars)
+				->send();
+			}
+		elseif ($type == "reset") {
+			$email = new CakeEmail('default');
+			$email->to($to)
+				->emailFormat('html')
+				->subject(Configure::read('NiceAuth.resetSubject'))
+				->template('NiceAuth.reset')
+				->viewVars($vars)
+				->send();			
+			}
+		}
+	
+	public function passwordReset() {
+        if ($this->request->is('post')) {
+        	if ($user = $this->User->findByEmail($this->request->data['User']['email'])) {
+        		$newPass = uniqid(rand());
+        		$user['User']['password'] = $newPass;
+        		if($this->User->save($user)) {
+        			$pass = array('password' => $newPass);
+        			$this->sendEmail('reset', $this->request->data['User']['email'], $pass);
+        			}
+        		$this->Session->setFlash('You will receive an email shortly!');
+        		//$this->redirect('/');
+        		}
+        	else {
+        		$this->Session->setFlash('The email address you entered could not be found.');
+        		}
+			}		
+		}
 
     public function register(){
     	$this->set('groups', $this->Group->find('list'));
@@ -62,6 +128,9 @@ class UsersController extends NiceAuthAppController {
             if ($this->User->save($this->request->data)) {
             	$this->fixAlias();
                 $this->Session->setFlash(__('You\'r account has been setup.'));
+                $newUser = $this->User->read();
+                $emailVars = array('username' => $newUser['User']['username']);
+                $this->sendEmail('register', $newUser['User']['email'], $emailVars);
                 $this->redirect('/me');
             	}
             else {
@@ -79,6 +148,8 @@ class UsersController extends NiceAuthAppController {
 					$this->User->save($newUser);
 					$user = $this->User->read();
 					$this->fixAlias();
+    	            $emailVars = array('username' => $user['User']['username']);
+	                $this->sendEmail('register', $user['User']['email'], $emailVars);
 					$this->Auth->login($user['User']);
 					$this->Session->setFlash('Your account has been created.');
 					$this->redirect('/me');
