@@ -17,6 +17,6 @@
 $config['NiceAuth'] = array(
 	'defaultGroup' => 2, //Sets the default group ID for user registration
 	'regEmail' => true, //Set to true to send new users an email when registering
-	'regSubject' => 'Thank you for registering',
-	'resetSubject' => 'Password Reset Instructions',
+	'regSubject' => 'Thank you for registering', //Subject of email sent to new users
+	'resetSubject' => 'Password Reset Instructions',  //Subject of email sent for password resets
 	);

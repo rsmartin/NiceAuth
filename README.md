@@ -19,6 +19,9 @@ Please post your ideas, comments and issues on our github page so we can continu
 > Make sure your CakePHP installation is installed, viewable to the web and connected to your database.
 > The home page of your installation will guide you in setting up CakePHP
 
+** To use the password reset feature, you must setup your email config file. ***
+Navigate to app/Config and copy email.php.default to email.php. Change setting to meet your setup.
+
 From terminal, navigate to your app/Plugin folder and clone the Git repo.
 
 ```
