@@ -19,4 +19,6 @@ $config['NiceAuth'] = array(
 	'regEmail' => true, //Set to true to send new users an email when registering
 	'regSubject' => 'Thank you for registering', //Subject of email sent to new users
 	'resetSubject' => 'Password Reset Instructions',  //Subject of email sent for password resets
+	'recaptchaPublic' => '6LdTQM0SAAAAAM-tRHEsCTX5PsaKcLyuugPza7dT',
+	'recaptchaPrivate' => '6LdTQM0SAAAAAA1JyZ73JPYU_ta8LQr60ZbKNJ-K',
 	);

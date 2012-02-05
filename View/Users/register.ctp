@@ -22,9 +22,16 @@ echo $this->Form->create('User');
 echo $this->Form->input('username');
 echo $this->Form->input('email');
 echo $this->Form->input('password');
-echo $this->Form->end('Register');
-
 ?>
+
+<script type="text/javascript" src="http://www.google.com/recaptcha/api/challenge?k=<?php echo Configure::read('NiceAuth.recaptchaPublic'); ?>"></script>
+<noscript>
+	<iframe src="http://www.google.com/recaptcha/api/noscript?k=<?php echo Configure::read('NiceAuth.recaptchaPublic'); ?>" height="300" width="500" frameborder="0"></iframe><br>
+	<textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
+	<input type="hidden" name="recaptcha_response_field" value="manual_challenge">
+</noscript>
+
+<?php echo $this->Form->end('Register'); ?>
 
 <form action="<?php echo $this->Html->url('/users/openid'); ?>" method="post" id="openid_form">
 	<input type="hidden" name="action" value="verify" />

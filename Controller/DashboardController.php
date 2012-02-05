@@ -113,7 +113,9 @@ class DashboardController extends NiceAuthAppController {
 		}
 
 	public function user_delete($id) {
+		$aro = $this->Acl->Aro->findByForeignKey($id);
 		$this->User->delete($id);
+		$this->Acl->Aro->delete($aro['Aro']['id']);
 		$this->redirect('/nice_auth/dashboard/users');
 		}
 

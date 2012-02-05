@@ -21,6 +21,7 @@ App::uses('AclComponent', 'Controller/Component');
 App::uses('DbAcl', 'Model');
 App::uses('CakeEmail', 'Network/Email');
 App::import('NiceAuth.Vendor', 'Lightopenid');
+App::import('NiceAuth.Vendor', 'recaptchalib');
 
 class UsersController extends NiceAuthAppController {
 	public $name = "Users";
@@ -121,21 +122,27 @@ class UsersController extends NiceAuthAppController {
     public function register(){
     	$this->set('groups', $this->Group->find('list'));
         if ($this->request->is('post')) {
-        	$this->User->create();
-        	$this->User->set(array(
-        		'group_id' => Configure::read('NiceAuth.defaultGroup')
-        		));
-            if ($this->User->save($this->request->data)) {
-            	$this->fixAlias();
-                $this->Session->setFlash(__('You\'r account has been setup.'));
-                $newUser = $this->User->read();
-                $emailVars = array('username' => $newUser['User']['username']);
-                $this->sendEmail('register', $newUser['User']['email'], $emailVars);
-                $this->redirect('/me');
-            	}
-            else {
-            	$this->Session->setFlash('Unable to create your\'re account. Please try again.');
-            	}
+        	$resp = recaptcha_check_answer(Configure::read('NiceAuth.recaptchaPrivate'), $_SERVER["REMOTE_ADDR"], $this->request->data["recaptcha_challenge_field"], $this->request->data["recaptcha_response_field"]);
+        	if ($resp->is_valid) {
+	        	$this->User->create();
+	        	$this->User->set(array(
+	        		'group_id' => Configure::read('NiceAuth.defaultGroup')
+	        		));
+	            if ($this->User->save($this->request->data)) {
+	            	$this->fixAlias();
+	                $this->Session->setFlash(__('You\'r account has been setup.'));
+	                $newUser = $this->User->read();
+	                $emailVars = array('username' => $newUser['User']['username']);
+	                $this->sendEmail('register', $newUser['User']['email'], $emailVars);
+	                $this->redirect('/me');
+	            	}
+	            else {
+	            	$this->Session->setFlash('Unable to create your\'re account. Please try again.');
+	            	}
+				}
+			else {
+				$this->Session->setFlash('The Verification Captcha you entered did not match, please try again.');
+				}
         	}
         elseif ($this->request->is('get')) {
         	if (isset($this->request->query['openid_mode'])) {
