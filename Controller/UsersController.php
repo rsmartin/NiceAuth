@@ -35,7 +35,7 @@ class UsersController extends NiceAuthAppController {
 			),
 		'Acl'
 		);
-	
+
 	public function index() {
 		if ($this->Auth->user('id')) {
 			$user = $this->User->findById($this->Auth->user());
@@ -65,7 +65,7 @@ class UsersController extends NiceAuthAppController {
 			$this->redirect('/login');
 			}
 		}
-	
+
 	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->Auth->userModel = 'User';
@@ -79,7 +79,7 @@ class UsersController extends NiceAuthAppController {
 		$this->Aro->findByForeignKey($user['User']['id']);
 		$this->Aro->save(array('alias' => $user['User']['username']));
 				}
-	
+
 	private function sendEmail($type, $to, $vars = null) {
 		if ($type == "registration" && Configure::read('NiceAuth.regEmail') == true) {
 			$email = new CakeEmail('default');
@@ -97,10 +97,10 @@ class UsersController extends NiceAuthAppController {
 				->subject(Configure::read('NiceAuth.resetSubject'))
 				->template('NiceAuth.reset')
 				->viewVars($vars)
-				->send();			
+				->send();
 			}
 		}
-	
+
 	public function passwordReset() {
         if ($this->request->is('post')) {
         	if ($user = $this->User->findByEmail($this->request->data['User']['email'])) {
@@ -116,7 +116,7 @@ class UsersController extends NiceAuthAppController {
         	else {
         		$this->Session->setFlash('The email address you entered could not be found.');
         		}
-			}		
+			}
 		}
 
     public function register(){
@@ -169,6 +169,7 @@ class UsersController extends NiceAuthAppController {
         }
 
     public function login(){
+        $this->layout = 'login';
         if ($this->request->is('post') || ($this->request->is('get') && isset($this->request->query['openid_mode']))) {
 			if ($this->Auth->login()) {
 				$this->redirect($this->Auth->redirect());
@@ -178,7 +179,7 @@ class UsersController extends NiceAuthAppController {
 				}
 			}
     	}
-    
+
     public function openid() {
         if ($this->request->is('post')) {
 			$openid = new Lightopenid($_SERVER['SERVER_NAME']);
