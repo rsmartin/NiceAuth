@@ -24,7 +24,7 @@
     ?>
     </fieldset>
 <?php echo $this->Form->end(__('Login'));?>
-
+<?php /* // @todo: make this better looking
 <form action="<?php echo $this->Html->url('/users/openid'); ?>" method="post" id="openid_form">
 	<input type="hidden" name="action" value="verify" />
 	<input type="hidden" name="type" value="login" />
@@ -44,3 +44,4 @@
 		</noscript>
 	</fieldset>
 </form>
+*/ ?>
