@@ -20,8 +20,8 @@ App::uses('ComponentCollection', 'Controller');
 App::uses('AclComponent', 'Controller/Component');
 App::uses('DbAcl', 'Model');
 App::uses('CakeEmail', 'Network/Email');
-App::import('NiceAuth.Vendor', 'Lightopenid');
-App::import('NiceAuth.Vendor', 'recaptchalib');
+App::import('Vendor', 'NiceAuth.Lightopenid');
+App::import('Vendor', 'NiceAuth.recaptchalib');
 
 class UsersController extends NiceAuthAppController {
 	public $name = "Users";
